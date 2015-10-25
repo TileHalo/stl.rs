@@ -3,7 +3,3 @@ name = "stl"
 version = "0.1.0"
 authors = ["Leo Lahti <leo.lahti1@gmail.com>"]
 
-[[example]]
-
-name = "example"
-path = "examples/example.rs"
