@@ -1,1 +1,1 @@
-#STL parser written in Rust. Uses Nigthly channel.
+STL parser written in Rust. Uses Nigthly channel.
