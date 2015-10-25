@@ -82,9 +82,15 @@ impl Triangle
         {
             if line.0[2] < x && line.1[2] > x || line.0[2] > x && line.1[2] < x
             {
-                let z = x*((line.1[2]-line.0[2])/(line.1[0]-line.0[0]));
-                let y = z*((line.1[1]-line.0[1])/(line.1[0]-line.0[0]));
-                vec.push([x, y, z]);
+                
+                let mut z = x*((line.1[2]-line.0[2])/(line.1[0]-line.0[0]));
+                let mut y = z*((line.1[1]-line.0[1])/(line.1[0]-line.0[0]));
+                if line.1[0]-line.0[0] == 0.0
+                {
+                    z = 0.0;
+                    y = 0.0;
+                }
+                vec.push([x, line.0[1]+y, line.0[2]+z]);
             }
         }
          return vec;
@@ -97,9 +103,14 @@ impl Triangle
         {
             if line.0[2] < y && line.1[2] > y || line.0[2] > y && line.1[2] < y
             {
-                let x = y*((line.1[0]-line.0[0])/(line.1[1]-line.0[1]));
-                let z = x*((line.1[2]-line.0[2])/(line.1[0]-line.0[0]));
-                vec.push([x, y, z]);
+                let mut x = y*((line.1[0]-line.0[0])/(line.1[1]-line.0[1]));
+                let mut z = x*((line.1[2]-line.0[2])/(line.1[0]-line.0[0]));
+                if line.1[1]-line.0[1] == 0.0
+                {
+                    x = 0.0;
+                    z = 0.0;
+                }
+                vec.push([line.0[0]+x, y, line.0[2]+z]);
             }
         }
          return vec;
@@ -112,9 +123,14 @@ impl Triangle
         {
             if line.0[2] < z && line.1[2] > z || line.0[2] > z && line.1[2] < z
             {
-                let x = z*((line.1[0]-line.0[0])/(line.1[2]-line.0[2]));
-                let y = x*((line.1[1]-line.0[1])/(line.1[0]-line.0[0]));
-                vec.push([x, y, z]);
+                let mut x = z*((line.1[0]-line.0[0])/(line.1[2]-line.0[2]));
+                let mut y = x*((line.1[1]-line.0[1])/(line.1[0]-line.0[0]));
+                if line.1[2]-line.0[2] == 0.0
+                {
+                    x = 0.0;
+                    y = 0.0;
+                }
+                vec.push([line.0[0]+x, line.0[1]+y, z]);
             }
         }
          return vec;
@@ -123,7 +139,49 @@ impl Triangle
 #[test]
 fn file_accessible()
 {
+    use std::fs::File;
+    use std::io::prelude::*;
     let mut file = File::open("assets/ascii.stl").unwrap();
     let mut data = String::new();
-    file.read_to_string(&mut data);
+    file.read_to_string(&mut data).unwrap();
+}
+#[test]
+fn parse()
+{
+    use std::fs::File;
+    use std::io::prelude::*;
+    let mut file = File::open("assets/ascii.stl").unwrap();
+    let mut data = String::new();
+    file.read_to_string(&mut data).unwrap();
+    Mesh::from_ascii(data);
+}
+#[test]
+fn intersect_x()
+{
+    use std::fs::File;
+    use std::io::prelude::*;
+    let mut file = File::open("assets/ascii.stl").unwrap();
+    let mut data = String::new();
+    file.read_to_string(&mut data).unwrap();
+    let slice = Mesh::from_ascii(data).slice(Axis::X, 0.0);
+}
+#[test]
+fn intersects_y()
+{
+    use std::fs::File;
+    use std::io::prelude::*;
+    let mut file = File::open("assets/ascii.stl").unwrap();
+    let mut data = String::new();
+    file.read_to_string(&mut data).unwrap();
+    let slice = Mesh::from_ascii(data).slice(Axis::X, 0.0);
+}
+#[test]
+fn intersects_z()
+{
+    use std::fs::File;
+    use std::io::prelude::*;
+    let mut file = File::open("assets/ascii.stl").unwrap();
+    let mut data = String::new();
+    file.read_to_string(&mut data).unwrap();
+    let slice = Mesh::from_ascii(data).slice(Axis::X, 0.0);
 }
